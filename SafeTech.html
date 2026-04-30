@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<!-- =========================================
+     ALL RIGHTS TO THE CODE ARE FULLY RESERVED
+============================================== -->
+
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Wczytuje kluczowe grafiki wcześniej, żeby hero szybciej się pojawił -->
+  <link rel="preload" as="image" href="obrazy/safetech-logo.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="obrazy/hero-safetech.webp" fetchpriority="high">
+
+  <!-- Czcionki z Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tomorrow:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Ustawienia szerokości widoku -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Wczytanie CSS -->
+  <link rel="stylesheet" href="styles/SafeTech.css">
+
+  <!-- Tytuł strony -->
+  <title>SafeTech – Audyty bezpieczeństwa maszyn, ocena ryzyka i wsparcie CE</title>
+
+  <!-- SEO -->
+  <meta name="description" content="SafeTech wspiera zakłady produkcyjne w audytach bezpieczeństwa maszyn, ocenie ryzyka, walidacji funkcji bezpieczeństwa, modernizacjach oraz procesie oznakowania CE.">
+  <meta name="keywords" content="bezpieczeństwo maszyn, audyt bezpieczeństwa maszyn, ocena ryzyka maszynowego, walidacja funkcji bezpieczeństwa, ocena zgodności maszyn, oznakowanie CE, wymagania minimalne maszyn, modernizacja bezpieczeństwa maszyn">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#111111">
+  <meta name="author" content="SafeTech">
+
+  <!-- OpenGraph -->
+  <meta property="og:title" content="SafeTech – Audyty bezpieczeństwa maszyn, ocena ryzyka i wsparcie CE">
+  <meta property="og:description" content="Od audytu bezpieczeństwa maszyn i oceny ryzyka po realizację prac dostosowawczych, walidację i wsparcie w procesie CE.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://safetech.pl/obrazy/safetech-og.webp">
+  <meta property="og:url" content="https://safetech.pl/SafeTech.html">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:site_name" content="SafeTech">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Dane strukturalne -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "SafeTech",
+    "url": "https://safetech.pl/",
+    "logo": "https://safetech.pl/obrazy/safetech-logo.webp",
+    "image": "https://safetech.pl/obrazy/safetech-og.webp",
+    "description": "Kompleksowe wsparcie dla zakładów produkcyjnych w obszarze bezpieczeństwa maszyn, oceny ryzyka, walidacji funkcji bezpieczeństwa, modernizacji i procesu oznakowania CE.",
+    "email": "biuro@audytce.pl",
+    "telephone": "+48533355256",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "ul. Pawłowicka 79",
+      "postalCode": "51-250",
+      "addressLocality": "Wrocław",
+      "addressCountry": "PL"
+    },
+    "areaServed": "PL",
+    "serviceType": [
+      "Audyt bezpieczeństwa maszyn",
+      "Ocena ryzyka maszynowego",
+      "Ocena zgodności maszyn i wsparcie w procesie CE",
+      "Weryfikacja układów sterowania i funkcji bezpieczeństwa",
+      "Weryfikacja dokumentacji technicznej",
+      "Ocena wymagań minimalnych",
+      "Doradztwo przy zakupie i modernizacji maszyn",
+      "Realizacja prac dostosowawczych",
+      "Wsparcie przy odbiorach FAT i SAT"
+    ]
+  }
+  </script>
+
+  <style>
+    /* =========================================
+       RESET / BASE
+    ========================================= */
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    html, body { overflow-x: hidden; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at top right, rgba(255,205,17,0.12), transparent 22%),
+        linear-gradient(180deg, #111111 0%, #1b1b1b 35%, #151515 100%);
+    }
+  </style>
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main">Przejdź do treści</a>
+
+  <!-- =========================
+       NAVBAR
+  ========================= -->
+  <div class="site-navbar" id="siteNavbar">
+    <div class="container site-navbar__inner">
+      <a class="site-brand" href="#start" aria-label="SafeTech - strona główna">
+        <img src="obrazy/safetech-logo.webp" alt="SafeTech" class="site-brand__logo" decoding="async">
+      </a>
+
+      <div class="site-nav-wrap">
+        <nav class="site-nav" aria-label="Główna nawigacja">
+          <button
+            class="menu-toggle"
+            id="menuToggle"
+            aria-controls="navLinks"
+            aria-expanded="false"
+            aria-label="Otwórz menu"
+            type="button"
+          >
+            <span class="bar" aria-hidden="true"></span>
+            <span class="bar" aria-hidden="true"></span>
+            <span class="bar" aria-hidden="true"></span>
+          </button>
+
+          <div class="nav-links" id="navLinks" role="menu">
+            <a href="#o-firmie" role="menuitem">O firmie</a>
+            <a href="#uslugi" role="menuitem">Usługi</a>
+            <a href="#jak-pracujemy" role="menuitem">Jak pracujemy</a>
+            <a href="#certyfikaty" role="menuitem">Kompetencje</a>
+            <a href="blog.html" role="menuitem">Blog</a>
+          </div>
+        </nav>
+
+        <a class="site-cta" href="#kontakt">Umów rozmowę</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       HEADER / HERO
+  ========================= -->
+  <header class="site-header" id="start">
+    <div class="container hero-layout">
+      <div class="hero-copy reveal">
+        <h1>Bezpieczeństwo maszyn od audytu do skutecznego wdrożenia zmian</h1>
+        <p>
+          Wspieramy zakłady produkcyjne ze wszystkich gałęzi przemysłu w zakresie bezpieczeństwa maszyn,
+          rzetelnej oceny ryzyka oraz skutecznej realizacji modernizacji i procesu zgodności.
+          Nie ograniczamy się do wskazywania niezgodności, lecz przekładamy wyniki audytu na konkretne
+          działania wdrożeniowe i potwierdzamy ich skuteczność po realizacji.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn-primary" href="#uslugi">
+            <span>Nasze usługi</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
+
+          <a class="btn-secondary" href="#jak-pracujemy">Zobacz proces współpracy</a>
+        </div>
+      </div>
+
+      <div class="hero-media reveal">
+        <img
+          src="obrazy/hero-safetech.webp"
+          alt="Bezpieczeństwo maszyn w zakładzie produkcyjnym"
+          class="hero-media__image"
+          decoding="async"
+        >
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- =========================
+         O FIRMIE
+    ========================= -->
+ <section class="section section-about" id="o-firmie">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-label">O firmie</span>
+      <h2>Wsparcie dla przemysłu tam, gdzie bezpieczeństwo musi być realne, a nie wyłącznie deklarowane</h2>
+      <p>
+        SafeTech to partner dla firm produkcyjnych, które chcą świadomie i odpowiedzialnie zarządzać bezpieczeństwem maszynowym.
+        Łączymy wiedzę inżynierską, znajomość wymagań prawnych i normatywnych oraz praktyczne doświadczenie zdobyte przy
+        dziesiątkach modernizacji i projektów budowy maszyn. Dzięki temu pomagamy patrzeć na bezpieczeństwo nie tylko z perspektywy
+        formalnej zgodności, ale również realnych warunków pracy, utrzymania ruchu i dalszego rozwoju zakładu.
+      </p>
+      <p>
+        W SafeTech stawiamy na rzetelność, przejrzystość i rozwiązania dopasowane do specyfiki procesu.
+        Wspieramy przedsiębiorstwa, które oczekują merytorycznego partnera potrafiącego uporządkować złożone zagadnienia techniczne
+        i przełożyć je na praktyczne, uzasadnione biznesowo decyzje.
+      </p>
+    </div>
+
+    <div class="about-premium-slider reveal" id="aboutPremiumSlider">
+      <div class="about-premium-slider__top">
+        <div>
+          <p class="about-premium-slider__eyebrow">Co nas wyróżnia?</p>
+        </div>
+
+        <div class="about-premium-slider__nav">
+          <button class="about-premium-arrow" id="aboutPrev" type="button" aria-label="Poprzedni slajd">
+            &#8592;
+          </button>
+          <button class="about-premium-arrow" id="aboutNext" type="button" aria-label="Następny slajd">
+            &#8594;
+          </button>
+        </div>
+      </div>
+
+      <div class="about-premium-slider__viewport">
+        <article class="about-premium-slide is-active">
+          <div class="about-premium-slide__meta">
+            <span class="about-premium-slide__index">01</span>
+            <span class="about-premium-slide__line"></span>
+          </div>
+    <h3>Interdyscyplinarne kompetencje</h3>
+    <p>
+      Łączymy kompetencje z zakresu bezpieczeństwa maszyn, mechaniki, elektryki i automatyki, dzięki czemu patrzymy na problem całościowo, a nie wycinkowo. Klient otrzymuje rekomendacje, które są nie tylko zgodne z wymaganiami, ale również technicznie realne do wdrożenia w funkcjonującym zakładzie.
+    </p>
+  </article>
+
+        <article class="about-premium-slide">
+          <div class="about-premium-slide__meta">
+            <span class="about-premium-slide__index">02</span>
+            <span class="about-premium-slide__line"></span>
+          </div>
+    <h3>Od audytu do skutecznego wdrożenia</h3>
+    <p>
+      Nie kończymy współpracy na wskazaniu niezgodności. Prowadzimy klienta przez cały proces: od audytu bezpieczeństwa i oceny ryzyka, przez określenie zakresu działań, aż po realizację prac, weryfikację skuteczności i domknięcie procesu zgodności.
+    </p>
+  </article>
+
+        <article class="about-premium-slide">
+          <div class="about-premium-slide__meta">
+            <span class="about-premium-slide__index">03</span>
+            <span class="about-premium-slide__line"></span>
+          </div>
+          <h3>Doświadczenie z realnych obiektów przemysłowych</h3>
+    <p>
+      Pracujemy zarówno z nowymi inwestycjami, jak i z maszynami od lat funkcjonującymi w produkcji. Rozumiemy specyfikę zakładów przemysłowych, ograniczenia techniczne, presję czasu oraz konieczność prowadzenia działań w sposób, który nie dezorganizuje pracy całej organizacji.
+    </p>
+  </article>
+
+        <article class="about-premium-slide">
+          <div class="about-premium-slide__meta">
+            <span class="about-premium-slide__index">04</span>
+            <span class="about-premium-slide__line"></span>
+          </div>
+          <h3>Ponad 10 lat praktyki projektowej</h3>
+    <p>
+      Nasze rekomendacje wynikają z wieloletniej praktyki przy budowie i modernizacjach maszyn, stanowisk zrobotyzowanych i linii technologicznych. Dzięki temu proponujemy rozwiązania, które uwzględniają nie tylko przepisy i normy, ale również realia wdrożeniowe, koszty i wykonalność techniczną.
+    </p>
+  </article>
+      </div>
+
+      <div class="about-premium-slider__bottom">
+        <div class="about-premium-dots" id="aboutDots"></div>
+        <div class="about-premium-progress">
+          <span class="about-premium-progress__bar" id="aboutProgressBar"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- =========================
+         USŁUGI
+    ========================= -->
+    <section class="section section-services" id="uslugi">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-label">Usługi</span>
+          <h2>Kompetencje obejmujące pełen zakres bezpieczeństwa maszyn</h2>
+          <p>
+            Nasze usługi zostały zaprojektowane tak, aby tworzyć spójny model wsparcia łączący kompetencje audytowe i wykonawcze,
+            przy jednoczesnym zachowaniu pełnej elastyczności względem potrzeb Klienta. Dzięki temu możliwe jest zarówno powierzenie nam
+            całego procesu, od audytu i zaleceń technicznych po realizację prac dostosowawczych oraz końcową weryfikację, jak i
+            skorzystanie z wybranych usług odpowiadających konkretnemu etapowi projektu lub określonej potrzebie technicznej.
+          </p>
+        </div>
+
+        <div class="services-grid">
+<article class="service-card reveal">
+  <img src="ikony/usluga-audyt.webp" alt="Ikona audytu bezpieczeństwa maszyn" class="service-card__icon" loading="lazy" decoding="async">
+  <h3>Audyt bezpieczeństwa maszyn</h3>
+  <p>Wykonujemy audyt bezpieczeństwa maszyn, stanowisk i linii produkcyjnych, wskazując niezgodności, braki techniczne i formalne oraz obszary wymagające działań dostosowawczych.</p>
+</article>
+
+<article class="service-card reveal">
+  <img src="ikony/usluga-badania.webp" alt="Ikona badań i pomiarów bezpieczeństwa maszyn" class="service-card__icon" loading="lazy" decoding="async">
+  <h3>Badania i pomiary</h3>
+  <p>Wykonujemy badania i pomiary związane z bezpieczeństwem maszyn, w tym pomiary czasu dobiegu dla urządzeń optoelektronicznych, wspierając proces oceny zgodności oraz walidację funkcji i rozwiązań bezpieczeństwa.</p>
+</article>
+
+<article class="service-card reveal">
+  <img src="ikony/usluga-cyber.webp" alt="Ikona cyberbezpieczeństwo" class="service-card__icon" loading="lazy" decoding="async">
+  <h3>Cyberbezpieczeństwo</h3>
+  <p>Przeprowadzamy ocenę zabezpieczesń maszyny przed nieuatoryzowanymi zmianami oprogramowania i parametrów związanych z funkcjami bezpieczeństwa.</p>
+</article>
+
+<article class="service-card reveal">
+  <img src="ikony/usluga-sterowanie.webp" alt="Ikona weryfikacji układów sterowania" class="service-card__icon" loading="lazy" decoding="async">
+  <h3>Weryfikacja układów sterowania</h3>
+  <p>Analizujemy układy sterowania odpowiedzialne za bezpieczeństwo, oceniając ich architekturę, logikę działania, połączenia oraz zgodność z wymaganiami norm.</p>
+</article>
+
+<article class="service-card reveal">
+  <img src="ikony/usluga-dokumentacja.webp" alt="Ikona weryfikacji dokumentacji technicznej maszyn" class="service-card__icon" loading="lazy" decoding="async">
+  <h3>Weryfikacja dokumentacji technicznej</h3>
+  <p>Sprawdzamy dokumentację techniczną maszyn, instrukcje oraz opracowania towarzyszące pod kątem kompletności, spójności i zgodności ze stanem rzeczywistym.</p>
+</article>
+
+<article class="service-card reveal">
+  <img src="ikony/usluga-projektowanie.webp" alt="Ikona projektowania układów bezpieczeństwa maszyn" class="service-card__icon" loading="lazy" decoding="async">
+  <h3>Projektowanie układów bezpieczeństwa</h3>
+  <p>Projektujemy układy bezpieczeństwa maszyn oraz techniczne środki ochronne, dopasowane do procesów produkcyjnych i poziomu ryzyka.</p>
+</article>
+
+<article class="service-card reveal">
+  <img src="ikony/usluga-modernizacja.webp" alt="Ikona realizacji prac dostosowawczych maszyn" class="service-card__icon" loading="lazy" decoding="async">
+  <h3>Realizacja prac dostosowawczych</h3>
+  <p>Realizujemy prace dostosowawcze w obszarze mechaniki, elektryki i automatyki, wdrażając rozwiązania poprawiające bezpieczeństwo maszyn i linii.</p>
+</article>
+
+<article class="service-card reveal">
+  <img src="ikony/usluga-doradztwo.webp" alt="Ikona doradztwa w zakresie bezpieczeństwa maszyn" class="service-card__icon" loading="lazy" decoding="async">
+  <h3>Doradztwo i wsparcie</h3>
+  <p>Doradzamy na etapie zakupu, projektowania i modernizacji maszyn, wspierając klientów w decyzjach technicznych oraz podczas odbiorów FAT i SAT.</p>
+</article>
+
+<article class="service-card reveal">
+  <img src="ikony/usluga-ce.webp" alt="Ikona oceny zgodności i oznakowania CE maszyn" class="service-card__icon" loading="lazy" decoding="async">
+  <h3>Ocena zgodności i oznakowanie CE</h3>
+  <p>Wspieramy w ocenie zgodności maszyn, przygotowaniu dokumentacji oraz prawidłowym przeprowadzeniu procesu oznakowania CE.</p>
+</article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         JAK PRACUJEMY
+    ========================= -->
+    <section class="section section-process" id="jak-pracujemy">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-label">Jak pracujemy</span>
+          <h2>Przejrzysty proces współpracy od pierwszego kontaktu do finalnego zamknięcia procesu oceny zgodności</h2>
+          <p>
+            Przedstawiony proces obrazuje pełny model współpracy w formule kompleksowej usługi, od rozpoznania potrzeb po końcowe
+            zamknięcie procesu zgodności. W praktyce zakres może zostać dopasowany do etapu, na którym znajduje się Twoja firma,
+            i obejmować wybrane części procesu, pod warunkiem zachowania jego logicznej i technicznej spójności.
+          </p>
+        </div>
+
+        <div class="process-grid process-grid--staggered">
+		
+<article class="process-step reveal"><span class="step-number">01</span><h3>Kontakt i analiza potrzeb</h3><p>Rozpoznajemy potrzeby zakładu, zakres projektu, typ maszyny lub linii produkcyjnej oraz oczekiwany model wsparcia, aby przygotować adekwatną ofertę.</p></article>
+<article class="process-step reveal"><span class="step-number">02</span><h3>Audyt bezpieczeństwa</h3><p>Przeprowadzamy audyt bezpieczeństwa maszyn na obiekcie, oceniając stan techniczny, dokumentację, zastosowane zabezpieczenia oraz rzeczywiste warunki pracy.</p></article>
+<article class="process-step reveal"><span class="step-number">03</span><h3>Prace obiektowe i inwentaryzacja</h3><p>Wykonujemy inwentaryzację układów, instalacji i zabezpieczeń oraz niezbędne badania i pomiary techniczne, które stanowią podstawę do dalszej oceny bezpieczeństwa i określenia zakresu prac.</p></article>
+<article class="process-step reveal"><span class="step-number">04</span><h3>Raport z audytu</h3><p>Przygotowujemy raport z audytu bezpieczeństwa, obejmujący wykryte niezgodności, poziom ryzyka, braki formalne oraz kluczowe wnioski techniczne.</p></article>
+<article class="process-step reveal"><span class="step-number">05</span><h3>Zakres prac dostosowawczych</h3><p>Określamy zakres prac technicznych i organizacyjnych niezbędnych do osiągnięcia wymaganego poziomu bezpieczeństwa maszyn oraz zgodności z wymaganiami.</p></article>
+<article class="process-step reveal"><span class="step-number">06</span><h3>Budżet i plan realizacji</h3><p>Przekładamy zakres prac na realny budżet, priorytety wdrożenia oraz założenia harmonogramu, ułatwiając planowanie modernizacji i działań dostosowawczych.</p></article>
+<article class="process-step reveal"><span class="step-number">07</span><h3>Realizacja prac dostosowawczych</h3><p>Wdrażamy uzgodnione działania mechaniczne, elektryczne i programowe, które wynikają z audytu bezpieczeństwa oraz przyjętego zakresu modernizacji.</p></article>
+<article class="process-step reveal"><span class="step-number">08</span><h3>Weryfikacja skuteczności wdrożeń</h3><p>Sprawdzamy, czy wdrożone rozwiązania skutecznie redukują ryzyko, działają zgodnie z założeniami i poprawiają bezpieczeństwo pracy przy maszynach.</p></article>
+<article class="process-step reveal"><span class="step-number">09</span><h3>Zamknięcie procesu zgodności</h3><p>Wspieramy klienta w formalnym zamknięciu procesu zgodności po modernizacji, przygotowaniu dokumentacji i bezpiecznym dopuszczeniu maszyny do eksploatacji.</p></article></div>
+      </div>
+    </section>
+
+    <!-- =========================
+         CERTYFIKATY
+    ========================= -->
+    <section class="section section-certificates" id="certyfikaty">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="section-label">Certyfikaty i uprawnienia</span>
+          <h2>Kompetencje potwierdzone certyfikacją ekspercką</h2>
+          <p>
+            Bezpieczeństwo maszynowe wymaga stałego rozwoju kompetencji i bieżącego śledzenia zmian w przepisach oraz normach.
+            Dlatego regularnie uczestniczymy w specjalistycznych szkoleniach i kursach prowadzonych przez uznane ośrodki eksperckie,
+            które odgrywają istotną rolę w kształtowaniu europejskich standardów w obszarze bezpieczeństwa maszyn.
+            Dzięki temu opieramy nasze działania na aktualnej wiedzy, zgodnej z kierunkiem zmian prawnych, interpretacyjnych i normatywnych.
+          </p>
+        </div>
+
+        <div class="certificates-grid reveal">
+          <div class="certificate-tile">
+            <img src="obrazy/certyfikat-01.webp" alt="Logo certyfikatu lub uprawnienia SafeTech" loading="lazy" decoding="async">
+          </div>
+          <div class="certificate-tile">
+            <img src="obrazy/certyfikat-02.webp" alt="Logo certyfikatu lub uprawnienia SafeTech" loading="lazy" decoding="async">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         KONTAKT
+    ========================= -->
+    <section class="section section-contact" id="kontakt">
+      <div class="container">
+        <div class="contact-layout">
+          <div class="contact-copy reveal">
+            <div class="section-head section-head--compact">
+              <span class="section-label">Kontakt</span>
+              <h2>Porozmawiajmy o bezpieczeństwie pracy przy Twoich maszynach</h2>
+              <p>
+				  Jeżeli chcesz uporządkować kwestie bezpieczeństwa pracy przy maszynach w swoim zakładzie, odpowiedzialnie zaplanować modernizację lub rzetelnie ocenić stan obecnego parku maszynowego, 
+				  skontaktuj się z nami. Pomożemy określić zakres wsparcia najlepiej dopasowany do charakteru Twojej produkcji, warunków pracy oraz realnych wyzwań technicznych i organizacyjnych.
+              </p>
+            </div>
+
+            <div class="contact-map-wrap reveal">
+              <iframe
+                class="contact-map"
+                title="Mapa siedziby SafeTech"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://maps.google.com/maps?q=ul.%20Paw%C5%82owicka%2079%2C%2051-250%20Wroc%C5%82aw&t=&z=15&ie=UTF8&iwloc=&output=embed">
+              </iframe>
+            </div>
+          </div>
+
+          <div class="contact-form-panel reveal">
+            <h3>Formularz kontaktowy</h3>
+            <p class="contact-form-note">
+              Formularz przygotowuje gotową wiadomość e-mail oraz wysyła ją na adres biuro@audytce.pl.
+            </p>
+
+            <form id="contactForm" novalidate>
+              <div class="contact-form-grid">
+                <div class="field">
+                  <label for="name">Imię i nazwisko</label>
+                  <input id="name" name="name" type="text" placeholder="Np. Jan Kowalski" required>
+                </div>
+
+                <div class="field">
+                  <label for="company">Firma</label>
+                  <input id="company" name="company" type="text" placeholder="Np. ABC Manufacturing" required>
+                </div>
+
+                <div class="field">
+                  <label for="email">Adres e-mail</label>
+                  <input id="email" name="email" type="email" placeholder="Np. jan@firma.pl" required>
+                </div>
+
+                <div class="field">
+                  <label for="phone">Telefon</label>
+                  <input id="phone" name="phone" type="tel" placeholder="Np. 600 000 000">
+                </div>
+
+                <div class="field field-full">
+                  <label for="message">Wiadomość</label>
+                  <textarea id="message" name="message" placeholder="Opisz krótko maszynę, linię lub problem, którego dotyczy zapytanie." required></textarea>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn-primary" type="submit">Wyślij wiadomość</button>
+                <p id="formStatus" class="form-status" aria-live="polite"></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================
+       STOPKA
+  ========================= -->
+<footer class="footer">
+  <div class="container footer__inner">
+
+    <div class="footer__left">
+      <img src="obrazy/safetech-logo.webp" alt="SafeTech" class="footer__logo">
+
+      <p class="footer__desc">
+        Kompleksowe wsparcie dla zakładów produkcyjnych w obszarze bezpieczeństwa maszyn, obejmujące audyty bezpieczeństwa maszyn, 
+		ocenę ryzyka maszynowego, walidację funkcji bezpieczeństwa, ocenę zgodności oraz wsparcie w procesie oznakowania CE maszyn.
+      </p>
+
+      <p class="footer__copyright">
+        © <span id="copyright-year"></span> SafeTech
+      </p>
+    </div>
+
+    <div class="footer__right">
+      <h4>Dane kontaktowe</h4>
+
+      <ul class="footer__contact">
+        <li>biuro@safetech.pl | biuro@audytyce.pl</li>
+        <li>+48 533 355 256</li>
+        <li>ul. Pawłowicka 79</li>
+		<li>51-126 Wrocław POLSKA</li>
+      </ul>
+    </div>
+
+  </div>
+</footer>
+
+  <!-- Wczytanie JavaScript -->
+  <script src="scripts/SafeTech.js"></script>
+</body>
+</html>
