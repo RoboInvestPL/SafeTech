@@ -1,3 +1,14 @@
+(function cleanContactRedirectImmediately() {
+  const currentUrl = window.location.href;
+  const currentHash = window.location.hash;
+
+  if (!currentHash.includes('#kontakt?') && !currentUrl.includes('#kontakt?')) return;
+
+  const cleanUrl = `${window.location.origin}${window.location.pathname}#kontakt`;
+
+  window.history.replaceState(null, document.title, cleanUrl);
+})();
+
 document.addEventListener('DOMContentLoaded', function () {
 
 /* =========================
