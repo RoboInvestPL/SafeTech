@@ -1003,6 +1003,12 @@ h3 {
   pointer-events: none !important;
 }
 
+.form-privacy-note {
+  padding: 10px 2px;
+  font-size: 0.65rem;
+  line-height: 1.5
+}
+
 /* =========================================
    STOPKA
 ========================================= */
