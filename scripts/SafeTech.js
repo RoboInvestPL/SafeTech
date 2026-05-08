@@ -217,7 +217,7 @@ const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
 
 // Wklej tutaj endpoint wygenerowany w Formspark
-const CONTACT_FORM_ENDPOINT = 'https://submit-form.com/TWOJ_FORM_ID';
+const CONTACT_FORM_ENDPOINT = 'https://submit-form.com/7CGyTwZ9A';
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -327,3 +327,4 @@ if (contactForm && formStatus) {
     }
   });
 }
+});
