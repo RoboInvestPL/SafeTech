@@ -216,7 +216,8 @@ document.addEventListener('DOMContentLoaded', function () {
 const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
 
-const CONTACT_FORM_ENDPOINT = 'https://submit-form.com/7CGyTwZ9A';
+// Wklej tutaj endpoint wygenerowany w Formspark
+const CONTACT_FORM_ENDPOINT = 'https://submit-form.com/TWOJ_FORM_ID';
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -241,16 +242,21 @@ if (contactForm && formStatus) {
 
     const submitButton = contactForm.querySelector('button[type="submit"]');
 
-    const name = document.getElementById('name')?.value.trim() || '';
-    const company = document.getElementById('company')?.value.trim() || '';
-    const email = document.getElementById('email')?.value.trim() || '';
-    const phone = document.getElementById('phone')?.value.trim() || '';
-    const message = document.getElementById('message')?.value.trim() || '';
+    const nameField = document.getElementById('name');
+    const companyField = document.getElementById('company');
+    const emailField = document.getElementById('email');
+    const phoneField = document.getElementById('phone');
+    const messageField = document.getElementById('message');
+    const websiteField = document.getElementById('website');
 
-    // Honeypot antyspamowy.
-    // Jeśli bot wypełni ukryte pole, formularz nie zostanie wysłany.
-    const website = document.getElementById('website')?.value.trim() || '';
+    const name = nameField ? nameField.value.trim() : '';
+    const company = companyField ? companyField.value.trim() : '';
+    const email = emailField ? emailField.value.trim() : '';
+    const phone = phoneField ? phoneField.value.trim() : '';
+    const message = messageField ? messageField.value.trim() : '';
+    const website = websiteField ? websiteField.value.trim() : '';
 
+    // Honeypot antyspamowy
     if (website) {
       return;
     }
@@ -274,7 +280,6 @@ if (contactForm && formStatus) {
 
       _email: {
         subject: `Zapytanie ze strony SafeTech – ${company}`,
-        from: email,
         replyTo: email
       }
     };
@@ -304,7 +309,7 @@ if (contactForm && formStatus) {
       contactForm.reset();
 
       setFormStatus(
-        'Wiadomość została wysłana. Dziękujemy za kontakt!',
+        'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.',
         'success'
       );
     } catch (error) {
@@ -322,4 +327,3 @@ if (contactForm && formStatus) {
     }
   });
 }
-});
