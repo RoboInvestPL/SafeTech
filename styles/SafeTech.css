@@ -973,6 +973,34 @@ h3 {
   color: #b7f0c8;
 }
 
+.field-hidden {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form-status {
+  margin: 12px 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.form-status.success {
+  color: #8fd19e;
+}
+
+.form-status.error {
+  color: #ff9b9b;
+}
+
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 /* =========================================
    STOPKA
 ========================================= */

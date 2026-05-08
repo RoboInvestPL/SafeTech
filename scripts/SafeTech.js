@@ -208,67 +208,118 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* =========================
-     LOGIKA: FORMULARZ KONTAKTOWY
-     Ten blok zostawiamy wydzielony pod dalszy rozwój.
-  ========================= */
+/* =========================
+   LOGIKA: FORMULARZ KONTAKTOWY
+   Wysyłka przez Formspark
+========================= */
 
-  const contactForm = document.getElementById('contactForm');
-  const formStatus = document.getElementById('formStatus');
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
 
-  function validateEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const CONTACT_FORM_ENDPOINT = 'https://submit-form.com/7CGyTwZ9A';
+
+function validateEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function setFormStatus(message, type = '') {
+  if (!formStatus) return;
+
+  formStatus.textContent = message;
+  formStatus.className = 'form-status';
+
+  if (type) {
+    formStatus.classList.add(type);
   }
+}
 
-  if (contactForm && formStatus) {
-    contactForm.addEventListener('submit', function (event) {
-      event.preventDefault();
+if (contactForm && formStatus) {
+  contactForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
 
-      formStatus.textContent = '';
-      formStatus.className = 'form-status';
+    setFormStatus('');
 
-      const name = document.getElementById('name')?.value.trim() || '';
-      const company = document.getElementById('company')?.value.trim() || '';
-      const email = document.getElementById('email')?.value.trim() || '';
-      const phone = document.getElementById('phone')?.value.trim() || '';
-      const topic = document.getElementById('topic')?.value.trim() || '';
-      const message = document.getElementById('message')?.value.trim() || '';
+    const submitButton = contactForm.querySelector('button[type="submit"]');
 
-      if (!name || !company || !email || !topic || !message) {
-        formStatus.textContent = 'Uzupełnij wszystkie wymagane pola formularza.';
-        return;
+    const name = document.getElementById('name')?.value.trim() || '';
+    const company = document.getElementById('company')?.value.trim() || '';
+    const email = document.getElementById('email')?.value.trim() || '';
+    const phone = document.getElementById('phone')?.value.trim() || '';
+    const message = document.getElementById('message')?.value.trim() || '';
+
+    // Honeypot antyspamowy.
+    // Jeśli bot wypełni ukryte pole, formularz nie zostanie wysłany.
+    const website = document.getElementById('website')?.value.trim() || '';
+
+    if (website) {
+      return;
+    }
+
+    if (!name || !company || !email || !message) {
+      setFormStatus('Uzupełnij wszystkie wymagane pola formularza.', 'error');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setFormStatus('Podaj poprawny adres e-mail.', 'error');
+      return;
+    }
+
+    const payload = {
+      name: name,
+      company: company,
+      email: email,
+      phone: phone || 'nie podano',
+      message: message,
+
+      _email: {
+        subject: `Zapytanie ze strony SafeTech – ${company}`,
+        from: email,
+        replyTo: email
+      }
+    };
+
+    try {
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.dataset.originalText = submitButton.textContent;
+        submitButton.textContent = 'Wysyłanie...';
       }
 
-      if (!validateEmail(email)) {
-        formStatus.textContent = 'Podaj poprawny adres e-mail.';
-        return;
+      setFormStatus('Wysyłam wiadomość...');
+
+      const response = await fetch(CONTACT_FORM_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error('Błąd wysyłki formularza.');
       }
 
-      const subject = `Zapytanie ze strony SafeTech – ${topic}`;
-      const body = [
-        'Dzień dobry,',
-        '',
-        'przesyłam zapytanie ze strony internetowej SafeTech.',
-        '',
-        `Imię i nazwisko: ${name}`,
-        `Firma: ${company}`,
-        `E-mail: ${email}`,
-        `Telefon: ${phone || 'nie podano'}`,
-        `Temat: ${topic}`,
-        '',
-        'Treść wiadomości:',
-        message,
-        '',
-        '---',
-        'Wiadomość przygotowana przez formularz kontaktowy strony SafeTech.'
-      ].join('\n');
+      contactForm.reset();
 
-      const mailto = `mailto:biuro@audytce.pl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailto;
+      setFormStatus(
+        'Wiadomość została wysłana. Dziękujemy za kontakt!',
+        'success'
+      );
+    } catch (error) {
+      console.error(error);
 
-      formStatus.textContent = 'Gotowe. Otwieram domyślny program pocztowy z przygotowaną wiadomością.';
-      formStatus.classList.add('success');
-    });
-  }
-
+      setFormStatus(
+        'Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz bezpośrednio na: biuro@audytyce.pl',
+        'error'
+      );
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = submitButton.dataset.originalText || 'Wyślij wiadomość';
+      }
+    }
+  });
+}
 });
