@@ -1,5 +1,78 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+/* =========================
+   LOGIKA: FORMULARZ KONTAKTOWY
+   Walidacja HTML5 + komunikaty UX
+   Wysyłka odbywa się natywnie przez HTML do Formspark.
+========================= */
+
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+
+function setFormStatus(message, type = '') {
+  if (!formStatus) return;
+
+  formStatus.textContent = message;
+  formStatus.className = 'form-status';
+
+  if (type) {
+    formStatus.classList.add(type);
+  }
+}
+
+if (contactForm && formStatus) {
+  contactForm.addEventListener('submit', function (event) {
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+
+    if (!contactForm.checkValidity()) {
+      event.preventDefault();
+
+      setFormStatus('Uzupełnij poprawnie wszystkie wymagane pola formularza.', 'error');
+      contactForm.reportValidity();
+
+      return;
+    }
+
+    setFormStatus('Wysyłam wiadomość...', 'success');
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.dataset.originalText = submitButton.textContent;
+      submitButton.textContent = 'Wysyłanie...';
+    }
+
+    // Tu NIE MA event.preventDefault()
+    // Tu NIE MA fetch()
+    // Poprawnie wypełniony formularz wysyła się natywnie przez HTML.
+  });
+
+  contactForm.querySelectorAll('input, textarea').forEach(function (field) {
+    field.addEventListener('input', function () {
+      if (formStatus.classList.contains('error')) {
+        setFormStatus('');
+      }
+    });
+  });
+}
+
+/* =========================
+   LOGIKA: CZYSZCZENIE ADRESU PO WYSŁANIU FORMULARZA
+========================= */
+
+if (
+  window.location.hash.startsWith('#kontakt?') ||
+  window.location.href.includes('#kontakt?')
+) {
+  window.history.replaceState(null, '', window.location.pathname + '#kontakt');
+
+  const formStatus = document.getElementById('formStatus');
+
+  if (formStatus) {
+    formStatus.textContent = 'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.';
+    formStatus.className = 'form-status success';
+  }
+}
+
   /* =========================
      LOGIKA: ANIMACJE WEJŚCIA SEKCJI
   ========================= */
