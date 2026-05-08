@@ -1,89 +1,24 @@
-/* =========================
-   LOGIKA: CZYSZCZENIE ADRESU PO WYSŁANIU FORMULARZA
-========================= */
-
-(function cleanFormsparkRedirectUrl() {
-  const url = new URL(window.location.href);
-
-  if (!url.searchParams.has('sent')) return;
-
-  window.history.replaceState(
-    null,
-    document.title,
-    window.location.origin + window.location.pathname + '#kontakt'
-  );
-
-  window.addEventListener('DOMContentLoaded', function () {
-    const contactSection = document.getElementById('kontakt');
-    const formStatus = document.getElementById('formStatus');
-
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    if (formStatus) {
-      formStatus.textContent =
-        'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.';
-      formStatus.className = 'form-status success';
-    }
-  });
-})();
-
 document.addEventListener('DOMContentLoaded', function () {
 
 /* =========================
-   LOGIKA: FORMULARZ KONTAKTOWY
-   Walidacja HTML5 + komunikaty UX
-   Wysyłka odbywa się natywnie przez HTML do Formspark.
+   LOGIKA: KOMUNIKAT PO WYSŁANIU FORMULARZA
 ========================= */
 
-const contactForm = document.getElementById('contactForm');
-const formStatus = document.getElementById('formStatus');
+if (sessionStorage.getItem('contactFormSent') === 'true') {
+  const contactSection = document.getElementById('kontakt');
+  const formStatus = document.getElementById('formStatus');
 
-function setFormStatus(message, type = '') {
-  if (!formStatus) return;
-
-  formStatus.textContent = message;
-  formStatus.className = 'form-status';
-
-  if (type) {
-    formStatus.classList.add(type);
+  if (contactSection) {
+    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-}
 
-if (contactForm && formStatus) {
-  contactForm.addEventListener('submit', function (event) {
-    const submitButton = contactForm.querySelector('button[type="submit"]');
+  if (formStatus) {
+    formStatus.textContent =
+      'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.';
+    formStatus.className = 'form-status success';
+  }
 
-    if (!contactForm.checkValidity()) {
-      event.preventDefault();
-
-      setFormStatus('Uzupełnij poprawnie wszystkie wymagane pola formularza.', 'error');
-      contactForm.reportValidity();
-
-      return;
-    }
-
-    setFormStatus('Wysyłam wiadomość...', 'success');
-
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.dataset.originalText = submitButton.textContent;
-      submitButton.textContent = 'Wysyłanie...';
-    }
-
-    // Tu NIE MA event.preventDefault()
-    // Tu NIE MA fetch()
-    // Poprawnie wypełniony formularz wysyła się natywnie przez HTML.
-  });
-
-  contactForm.querySelectorAll('input, textarea').forEach(function (field) {
-    field.addEventListener('input', function () {
-      if (formStatus.classList.contains('error')) {
-        setFormStatus('');
-      }
-    });
-  });
+  sessionStorage.removeItem('contactFormSent');
 }
 
   /* =========================
