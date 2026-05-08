@@ -1,12 +1,32 @@
-(function cleanContactRedirectImmediately() {
-  const currentUrl = window.location.href;
-  const currentHash = window.location.hash;
+/* =========================
+   LOGIKA: CZYSZCZENIE ADRESU PO WYSŁANIU FORMULARZA
+========================= */
 
-  if (!currentHash.includes('#kontakt?') && !currentUrl.includes('#kontakt?')) return;
+(function cleanFormsparkRedirectUrl() {
+  const url = new URL(window.location.href);
 
-  const cleanUrl = `${window.location.origin}${window.location.pathname}#kontakt`;
+  if (!url.searchParams.has('sent')) return;
 
-  window.history.replaceState(null, document.title, cleanUrl);
+  window.history.replaceState(
+    null,
+    document.title,
+    window.location.origin + window.location.pathname + '#kontakt'
+  );
+
+  window.addEventListener('DOMContentLoaded', function () {
+    const contactSection = document.getElementById('kontakt');
+    const formStatus = document.getElementById('formStatus');
+
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    if (formStatus) {
+      formStatus.textContent =
+        'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.';
+      formStatus.className = 'form-status success';
+    }
+  });
 })();
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -64,24 +84,6 @@ if (contactForm && formStatus) {
       }
     });
   });
-}
-
-/* =========================
-   LOGIKA: CZYSZCZENIE ADRESU PO WYSŁANIU FORMULARZA
-========================= */
-
-if (
-  window.location.hash.startsWith('#kontakt?') ||
-  window.location.href.includes('#kontakt?')
-) {
-  window.history.replaceState(null, '', window.location.pathname + '#kontakt');
-
-  const formStatus = document.getElementById('formStatus');
-
-  if (formStatus) {
-    formStatus.textContent = 'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.';
-    formStatus.className = 'form-status success';
-  }
 }
 
   /* =========================
