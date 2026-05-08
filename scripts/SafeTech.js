@@ -1,26 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-/* =========================
-   LOGIKA: KOMUNIKAT PO WYSŁANIU FORMULARZA
-========================= */
-
-if (sessionStorage.getItem('contactFormSent') === 'true') {
-  const contactSection = document.getElementById('kontakt');
-  const formStatus = document.getElementById('formStatus');
-
-  if (contactSection) {
-    contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  if (formStatus) {
-    formStatus.textContent =
-      'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.';
-    formStatus.className = 'form-status success';
-  }
-
-  sessionStorage.removeItem('contactFormSent');
-}
-
   /* =========================
      LOGIKA: ANIMACJE WEJŚCIA SEKCJI
   ========================= */
@@ -228,5 +207,72 @@ if (sessionStorage.getItem('contactFormSent') === 'true') {
       }
     });
   }
+  
+  /* =========================
+   LOGIKA: FORMULARZ KONTAKTOWY
+   Walidacja HTML5 + wysyłka natywna do Formspark w ukrytym iframe.
+========================= */
+
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+
+function setFormStatus(message, type = '') {
+  if (!formStatus) return;
+
+  formStatus.textContent = message;
+  formStatus.className = 'form-status';
+
+  if (type) {
+    formStatus.classList.add(type);
+  }
+}
+
+if (contactForm && formStatus) {
+  contactForm.addEventListener('submit', function (event) {
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+
+    if (!contactForm.checkValidity()) {
+      event.preventDefault();
+
+      setFormStatus('Uzupełnij poprawnie wszystkie wymagane pola formularza.', 'error');
+      contactForm.reportValidity();
+
+      return;
+    }
+
+    setFormStatus('Wysyłam wiadomość...', 'success');
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.dataset.originalText = submitButton.textContent;
+      submitButton.textContent = 'Wysyłanie...';
+    }
+
+    window.setTimeout(function () {
+      contactForm.reset();
+
+      setFormStatus(
+        'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.',
+        'success'
+      );
+
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = submitButton.dataset.originalText || 'Wyślij wiadomość';
+      }
+    }, 1200);
+
+    // Brak event.preventDefault() przy poprawnym formularzu.
+    // Formularz wysyła się natywnie do Formspark w ukrytym iframe.
+  });
+
+  contactForm.querySelectorAll('input, textarea').forEach(function (field) {
+    field.addEventListener('input', function () {
+      if (formStatus.classList.contains('error')) {
+        setFormStatus('');
+      }
+    });
+  });
+}
 
 });
