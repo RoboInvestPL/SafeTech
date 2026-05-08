@@ -216,13 +216,6 @@ document.addEventListener('DOMContentLoaded', function () {
 const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
 
-// Wklej tutaj endpoint wygenerowany w Formspark
-const CONTACT_FORM_ENDPOINT = 'https://submit-form.com/7CGyTwZ9A';
-
-function validateEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
 function setFormStatus(message, type = '') {
   if (!formStatus) return;
 
@@ -238,51 +231,16 @@ if (contactForm && formStatus) {
   contactForm.addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    setFormStatus('');
+    const form = event.currentTarget;
+    const submitButton = form.querySelector('button[type="submit"]');
 
-    const submitButton = contactForm.querySelector('button[type="submit"]');
-
-    const nameField = document.getElementById('name');
-    const companyField = document.getElementById('company');
-    const emailField = document.getElementById('email');
-    const phoneField = document.getElementById('phone');
-    const messageField = document.getElementById('message');
-    const websiteField = document.getElementById('website');
-
-    const name = nameField ? nameField.value.trim() : '';
-    const company = companyField ? companyField.value.trim() : '';
-    const email = emailField ? emailField.value.trim() : '';
-    const phone = phoneField ? phoneField.value.trim() : '';
-    const message = messageField ? messageField.value.trim() : '';
-    const website = websiteField ? websiteField.value.trim() : '';
-
-    // Honeypot antyspamowy
-    if (website) {
+    if (!form.checkValidity()) {
+      setFormStatus('Uzupełnij poprawnie wszystkie wymagane pola formularza.', 'error');
+      form.reportValidity();
       return;
     }
 
-    if (!name || !company || !email || !message) {
-      setFormStatus('Uzupełnij wszystkie wymagane pola formularza.', 'error');
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setFormStatus('Podaj poprawny adres e-mail.', 'error');
-      return;
-    }
-
-    const payload = {
-      name: name,
-      company: company,
-      email: email,
-      phone: phone || 'nie podano',
-      message: message,
-
-      _email: {
-        subject: `Zapytanie ze strony SafeTech – ${company}`,
-        replyTo: email
-      }
-    };
+    const formData = new FormData(form);
 
     try {
       if (submitButton) {
@@ -293,20 +251,19 @@ if (contactForm && formStatus) {
 
       setFormStatus('Wysyłam wiadomość...');
 
-      const response = await fetch(CONTACT_FORM_ENDPOINT, {
+      const response = await fetch(form.action, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: formData
       });
 
       if (!response.ok) {
-        throw new Error('Błąd wysyłki formularza.');
+        throw new Error('Formspark zwrócił błąd wysyłki.');
       }
 
-      contactForm.reset();
+      form.reset();
 
       setFormStatus(
         'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.',
@@ -316,7 +273,7 @@ if (contactForm && formStatus) {
       console.error(error);
 
       setFormStatus(
-        'Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz bezpośrednio na: biuro@audytyce.pl',
+        'Nie udało się wysłać wiadomości. Spróbuj ponownie lub napisz bezpośrednio na: biuro@safetech.pl',
         'error'
       );
     } finally {

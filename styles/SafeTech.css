@@ -973,14 +973,6 @@ h3 {
   color: #b7f0c8;
 }
 
-.field-hidden {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
 .form-status {
   margin: 12px 0 0;
   font-size: 0.95rem;

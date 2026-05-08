@@ -425,50 +425,52 @@
             </div>
           </div>
 
-          <div class="contact-form-panel reveal">
-            <h3>Formularz kontaktowy</h3>
-            <p class="contact-form-note">
-              Formularz przygotowuje gotową wiadomość e-mail oraz wysyła ją na adres biuro@audytce.pl.
-            </p>
+			<div class="contact-form-panel reveal">
+			  <h3>Formularz kontaktowy</h3>
 
-            <form id="contactForm" novalidate>
-              <div class="contact-form-grid">
-                <div class="field">
-                  <label for="name">Imię i nazwisko</label>
-                  <input id="name" name="name" type="text" placeholder="Np. Jan Kowalski" required>
-                </div>
+			  <p class="contact-form-note">
+				Opisz krótko maszynę, linię lub problem. Odpowiemy najszybciej jak to możliwe.
+			  </p>
 
-                <div class="field">
-                  <label for="company">Firma</label>
-                  <input id="company" name="company" type="text" placeholder="Np. ABC Manufacturing" required>
-                </div>
+			  <form
+				id="contactForm"
+				action="https://submit-form.com/7CGyTwZ9A"
+				method="POST"
+			  >
+				<div class="contact-form-grid">
+				  <div class="field">
+					<label for="name">Imię i nazwisko</label>
+					<input id="name" name="name" type="text" placeholder="Np. Jan Kowalski" required>
+				  </div>
 
-                <div class="field">
-                  <label for="email">Adres e-mail</label>
-                  <input id="email" name="email" type="email" placeholder="Np. jan@firma.pl" required>
-                </div>
+				  <div class="field">
+					<label for="company">Firma</label>
+					<input id="company" name="company" type="text" placeholder="Np. ABC Manufacturing" required>
+				  </div>
 
-                <div class="field">
-                  <label for="phone">Telefon</label>
-                  <input id="phone" name="phone" type="tel" placeholder="Np. 600 000 000">
-                </div>
+				  <div class="field">
+					<label for="email">Adres e-mail</label>
+					<input id="email" name="email" type="email" placeholder="Np. jan@firma.pl" required>
+				  </div>
 
-                <div class="field field-full">
-                  <label for="message">Wiadomość</label>
-                  <textarea id="message" name="message" placeholder="Opisz krótko maszynę, linię lub problem, którego dotyczy zapytanie." required></textarea>
-                </div>
-              </div>
+				  <div class="field">
+					<label for="phone">Telefon</label>
+					<input id="phone" name="phone" type="tel" placeholder="Np. 600 000 000">
+				  </div>
 
-				<div class="field field-hidden" aria-hidden="true">
-				  <label for="website">Strona internetowa</label>
-				  <input
-					id="website"
-					name="website"
-					type="text"
-					tabindex="-1"
-					autocomplete="off"
-				  >
+				  <div class="field field-full">
+					<label for="message">Wiadomość</label>
+					<textarea
+					  id="message"
+					  name="message"
+					  placeholder="Opisz krótko maszynę, linię lub problem, którego dotyczy zapytanie."
+					  required
+					></textarea>
+				  </div>
 				</div>
+
+				<input type="hidden" name="_email.subject" value="Zapytanie ze strony SafeTech">
+				<input type="hidden" name="_redirect" value="https://safetech.pl/#kontakt">
 
 				<div class="form-actions">
 				  <button class="btn-primary" type="submit">Wyślij wiadomość</button>
