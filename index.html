@@ -8,20 +8,6 @@
 <head>
   <meta charset="UTF-8" />
 
-<script>
-  (function () {
-    const url = new URL(window.location.href);
-
-    if (!url.searchParams.has('sent')) return;
-
-    sessionStorage.setItem('contactFormSent', 'true');
-
-    const cleanUrl = window.location.origin + window.location.pathname + '#kontakt';
-
-    window.history.replaceState(null, document.title, cleanUrl);
-  })();
-</script>
-
   <!-- Wczytuje kluczowe grafiki wcześniej, żeby hero szybciej się pojawił -->
   <link rel="preload" as="image" href="obrazy/safetech-logo.webp" fetchpriority="high">
   <link rel="preload" as="image" href="obrazy/hero-safetech.webp" fetchpriority="high">
