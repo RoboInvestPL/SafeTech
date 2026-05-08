@@ -216,6 +216,8 @@ document.addEventListener('DOMContentLoaded', function () {
 const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
 
+const CONTACT_FORM_ENDPOINT = 'https://submit-form.com/7CGyTwZ9A';
+
 function setFormStatus(message, type = '') {
   if (!formStatus) return;
 
@@ -240,7 +242,19 @@ if (contactForm && formStatus) {
       return;
     }
 
-    const formData = new FormData(form);
+    const payload = {
+      name: document.getElementById('name')?.value.trim() || '',
+      company: document.getElementById('company')?.value.trim() || '',
+      email: document.getElementById('email')?.value.trim() || '',
+      phone: document.getElementById('phone')?.value.trim() || 'nie podano',
+      message: document.getElementById('message')?.value.trim() || '',
+
+      _email: {
+        subject: 'Zapytanie ze strony SafeTech',
+        from: 'SafeTech formularz kontaktowy',
+        replyTo: document.getElementById('email')?.value.trim() || ''
+      }
+    };
 
     try {
       if (submitButton) {
@@ -251,15 +265,18 @@ if (contactForm && formStatus) {
 
       setFormStatus('Wysyłam wiadomość...');
 
-      const response = await fetch(form.action, {
+      const response = await fetch(CONTACT_FORM_ENDPOINT, {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: formData
+        body: JSON.stringify(payload)
       });
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Formspark response:', response.status, errorText);
         throw new Error('Formspark zwrócił błąd wysyłki.');
       }
 
