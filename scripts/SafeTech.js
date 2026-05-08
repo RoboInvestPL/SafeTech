@@ -208,13 +208,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   
-  /* =========================
+/* =========================
    LOGIKA: FORMULARZ KONTAKTOWY
    Walidacja HTML5 + wysyłka natywna do Formspark w ukrytym iframe.
 ========================= */
 
 const contactForm = document.getElementById('contactForm');
 const formStatus = document.getElementById('formStatus');
+const formsparkFrame = document.getElementById('formsparkFrame');
+
+let isContactFormSubmitting = false;
+let contactFormSubmitTimeout = null;
 
 function setFormStatus(message, type = '') {
   if (!formStatus) return;
@@ -227,51 +231,89 @@ function setFormStatus(message, type = '') {
   }
 }
 
+function setSubmitButtonState(isLoading) {
+  if (!contactForm) return;
+
+  const submitButton = contactForm.querySelector('button[type="submit"]');
+  if (!submitButton) return;
+
+  if (isLoading) {
+    submitButton.disabled = true;
+    submitButton.dataset.originalText = submitButton.textContent;
+    submitButton.textContent = 'Wysyłanie...';
+  } else {
+    submitButton.disabled = false;
+    submitButton.textContent = submitButton.dataset.originalText || 'Wyślij wiadomość';
+  }
+}
+
 if (contactForm && formStatus) {
   contactForm.addEventListener('submit', function (event) {
-    const submitButton = contactForm.querySelector('button[type="submit"]');
+    event.preventDefault();
 
-    if (!contactForm.checkValidity()) {
-      event.preventDefault();
-
-      setFormStatus('Uzupełnij poprawnie wszystkie wymagane pola formularza.', 'error');
-      contactForm.reportValidity();
-
+    if (isContactFormSubmitting) {
+      setFormStatus('Wiadomość jest już wysyłana. Proszę chwilę poczekać.', 'success');
       return;
     }
 
-    setFormStatus('Wysyłam wiadomość...', 'success');
-
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.dataset.originalText = submitButton.textContent;
-      submitButton.textContent = 'Wysyłanie...';
+    if (!contactForm.checkValidity()) {
+      setFormStatus('Uzupełnij poprawnie wszystkie wymagane pola formularza.', 'error');
+      contactForm.reportValidity();
+      return;
     }
 
-    window.setTimeout(function () {
-      contactForm.reset();
+    isContactFormSubmitting = true;
+    setSubmitButtonState(true);
+    setFormStatus('Wysyłam wiadomość...', 'success');
+
+    if (contactFormSubmitTimeout) {
+      clearTimeout(contactFormSubmitTimeout);
+    }
+
+    contactFormSubmitTimeout = window.setTimeout(function () {
+      isContactFormSubmitting = false;
+      setSubmitButtonState(false);
 
       setFormStatus(
-        'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.',
+        'Wiadomość prawdopodobnie została wysłana. Jeżeli nie otrzymasz odpowiedzi, skontaktuj się bezpośrednio: biuro@safetech.pl',
         'success'
       );
+    }, 8000);
 
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.textContent = submitButton.dataset.originalText || 'Wyślij wiadomość';
-      }
-    }, 1200);
-
-    // Brak event.preventDefault() przy poprawnym formularzu.
-    // Formularz wysyła się natywnie do Formspark w ukrytym iframe.
+    // Krótkie opóźnienie pozwala przeglądarce pokazać komunikat "Wysyłam..."
+    // i dopiero potem wysłać formularz do ukrytego iframe.
+    window.setTimeout(function () {
+      HTMLFormElement.prototype.submit.call(contactForm);
+    }, 100);
   });
 
   contactForm.querySelectorAll('input, textarea').forEach(function (field) {
     field.addEventListener('input', function () {
-      if (formStatus.classList.contains('error')) {
+      if (!isContactFormSubmitting && formStatus.classList.contains('error')) {
         setFormStatus('');
       }
     });
+  });
+}
+
+if (formsparkFrame && contactForm && formStatus) {
+  formsparkFrame.addEventListener('load', function () {
+    if (!isContactFormSubmitting) return;
+
+    if (contactFormSubmitTimeout) {
+      clearTimeout(contactFormSubmitTimeout);
+      contactFormSubmitTimeout = null;
+    }
+
+    contactForm.reset();
+
+    isContactFormSubmitting = false;
+    setSubmitButtonState(false);
+
+    setFormStatus(
+      'Dziękujemy. Wiadomość została wysłana. Skontaktujemy się tak szybko, jak to możliwe.',
+      'success'
+    );
   });
 }
 
